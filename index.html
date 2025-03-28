@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Unity Web Player | H5Game</title>
+    <!-- Google AdSense -->
+    <script async
+      data-adbreak-test="on"
+      data-ad-frequency-hint="30s"
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3940256099942544"
+      crossorigin="anonymous">
+    </script>
+    <!--
+    <script>
+      // Initialize the Google AdSense
+      window.adsbygoogle = window.adsbygoogle || [];
+      var adBreak = adConfig = function(o) {adsbygoogle.push(o);}
+      // Preload AdBreak
+      adBreak({preloadAdBreak: 'on'});
+    </script>
+    -->
+    <script>
+      window.adsbygoogle = window.adsbygoogle || [];
+      var adBreak = adConfig = function(o) {adsbygoogle.push(o);}
+
+      adConfig({
+        preloadAdBreaks: 'on',
+        onReady: () => {
+            console.log("index : onReady");
+        }
+      });
+    </script>
+  </head>
+  <body style="text-align: center; padding: 0; border: 0; margin: 0;">
+    <canvas id="unity-canvas" width=960 height=600 tabindex="-1" style="width: 960px; height: 600px; background: #231F20"></canvas>
+    <script src="Build/H5Game.loader.js"></script>
+    <script>
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        // Mobile device style: fill the whole browser client area with the game canvas:
+        var meta = document.createElement('meta');
+        meta.name = 'viewport';
+        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
+        document.getElementsByTagName('head')[0].appendChild(meta);
+
+        var canvas = document.querySelector("#unity-canvas");
+        canvas.style.width = "100%";
+        canvas.style.height = "100%";
+        canvas.style.position = "fixed";
+
+        document.body.style.textAlign = "left";
+      }
+
+      var unityInstance = null;
+
+      createUnityInstance(document.querySelector("#unity-canvas"), {
+        arguments: [],
+        dataUrl: "Build/H5Game.data",
+        frameworkUrl: "Build/H5Game.framework.js",
+        codeUrl: "Build/H5Game.wasm",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "DefaultCompany",
+        productName: "H5Game",
+        productVersion: "1.0",
+      }).then((unityInstanceResutl) => {
+        unityInstance = unityInstanceResutl;
+      }).catch((message) => {
+        alert(message);
+      });
+<!--
+      function showRewardedAd() {
+        console.log("unityInstance");
+        console.log(unityInstance);
+        // Show an ad
+        adBreak({
+          type: 'reward',
+          name: 'reward-test',
+          beforeAd: () => {
+              console.log("beforeAd");
+          },
+          beforeReward: (showAdFn) => {
+              console.log("beforeReward");
+              showAdFn();
+          },
+          afterReward: () => {
+              console.log("afterReward");
+          },
+          adViewed: () => {
+              console.log("adViewed");
+              unityInstance.SendMessage('AdManager', 'OnRewardedAdFromJS');
+          },
+          adDismissed: () => {
+              console.log("beforeAd");
+              unityInstance.SendMessage('AdManager', 'OnCloseAdFromJS');
+          },
+          adBreakDone: (placementInfo) => {
+              console.log('adBreakDone');
+              console.log(placementInfo.breakStatus);
+              <!--
+              if (placementInfo.breakStatus === 'viewed')
+                unityInstance.SendMessage('AdManager', 'OnRewardedAdFromJS');
+              else
+                unityInstance.SendMessage('AdManager', 'OnCloseAdFromJS');
+              -->
+          }
+        });
+      }
+-->
+
+    </script>
+  </body>
+</html>
