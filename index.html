@@ -3,110 +3,178 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity Web Player | H5Game</title>
-    <!-- Google AdSense -->
-    <script async
-      data-adbreak-test="on"
-      data-ad-frequency-hint="30s"
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3940256099942544"
-      crossorigin="anonymous">
-    </script>
-    <!--
-    <script>
-      // Initialize the Google AdSense
-      window.adsbygoogle = window.adsbygoogle || [];
-      var adBreak = adConfig = function(o) {adsbygoogle.push(o);}
-      // Preload AdBreak
-      adBreak({preloadAdBreak: 'on'});
-    </script>
-    -->
-    <script>
-      window.adsbygoogle = window.adsbygoogle || [];
-      var adBreak = adConfig = function(o) {adsbygoogle.push(o);}
-
-      adConfig({
-        preloadAdBreaks: 'on',
-        onReady: () => {
-            console.log("index : onReady");
-        }
-      });
-    </script>
+    <title>Unity Web Player | TestInit</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
+    <script src="scripts/dapp-portal-sdk.js"></script>
+    <script src="scripts/dapp-portal-sdk-unity.js"></script>
+    <link rel="stylesheet" href="TemplateData/open-ads-sdk-style.css">
+    <script type="text/javascript" src="https://static.line-scdn.net/liff/edge/versions/2.22.3/sdk.js"></script>
+    <script type="text/javascript" src="https://protocol.openad.network/line/sdk.loader.js?v=2.0"></script>
+    <script src="scripts/open-ads-sdk-unity.js"></script>
   </head>
-  <body style="text-align: center; padding: 0; border: 0; margin: 0;">
-    <canvas id="unity-canvas" width=960 height=600 tabindex="-1" style="width: 960px; height: 600px; background: #231F20"></canvas>
-    <script src="Build/WebGLReward.loader.js"></script>
+  <body>
+    <div id="unity-container" class="unity-desktop">
+      <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
+      <div id="unity-loading-bar">
+        <div id="unity-logo"></div>
+        <div id="unity-progress-bar-empty">
+          <div id="unity-progress-bar-full"></div>
+        </div>
+      </div>
+      <div id="unity-warning"> </div>
+      <div id="unity-footer">
+        <div id="unity-logo-title-footer"></div>
+        <div id="unity-fullscreen-button"></div>
+        <div id="unity-build-title">TestInit</div>
+      </div>
+      <div id= "open-ads-banner" class="openADJsSDKBanner banner-ad" 
+        publisherId=""
+        zoneId=""></div>
+    </div>
     <script>
+      var canvas = document.querySelector("#unity-canvas");
+
+      // Shows a temporary message banner/ribbon for a few seconds, or
+      // a permanent error message on top of the canvas if type=='error'.
+      // If type=='warning', a yellow highlight color is used.
+      // Modify or remove this function to customize the visually presented
+      // way that non-critical warnings and error messages are presented to the
+      // user.
+      function unityShowBanner(msg, type) {
+        var warningBanner = document.querySelector("#unity-warning");
+        function updateBannerVisibility() {
+          warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
+        }
+        var div = document.createElement('div');
+        div.innerHTML = msg;
+        warningBanner.appendChild(div);
+        if (type == 'error') div.style = 'background: red; padding: 10px;';
+        else {
+          if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
+          setTimeout(function() {
+            warningBanner.removeChild(div);
+            updateBannerVisibility();
+          }, 5000);
+        }
+        updateBannerVisibility();
+      }
+
+      var buildUrl = "Build";
+      var loaderUrl = buildUrl + "/TempleteProject_Brotli.loader.js";
+      var config = {
+        arguments: [],
+        dataUrl: buildUrl + "/TempleteProject_Brotli.data.br",
+        frameworkUrl: buildUrl + "/TempleteProject_Brotli.framework.js.br",
+        codeUrl: buildUrl + "/TempleteProject_Brotli.wasm.br",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "DefaultCompany",
+        productName: "TestInit",
+        productVersion: "1.0",
+        showBanner: unityShowBanner,
+      };
+
+      // By default, Unity keeps WebGL canvas render target size matched with
+      // the DOM size of the canvas element (scaled by window.devicePixelRatio)
+      // Set this to false if you want to decouple this synchronization from
+      // happening inside the engine, and you would instead like to size up
+      // the canvas DOM size and WebGL render target sizes yourself.
+      // config.matchWebGLToCanvasSize = false;
+
+      // If you would like all file writes inside Unity Application.persistentDataPath
+      // directory to automatically persist so that the contents are remembered when
+      // the user revisits the site the next time, uncomment the following line:
+      // config.autoSyncPersistentDataPath = true;
+      // This autosyncing is currently not the default behavior to avoid regressing
+      // existing user projects that might rely on the earlier manual
+      // JS_FileSystem_Sync() behavior, but in future Unity version, this will be
+      // expected to change.
+
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
         // Mobile device style: fill the whole browser client area with the game canvas:
+
         var meta = document.createElement('meta');
         meta.name = 'viewport';
         meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
         document.getElementsByTagName('head')[0].appendChild(meta);
+        document.querySelector("#unity-container").className = "unity-mobile";
+        canvas.className = "unity-mobile";
 
-        var canvas = document.querySelector("#unity-canvas");
-        canvas.style.width = "100%";
-        canvas.style.height = "100%";
-        canvas.style.position = "fixed";
+        // To lower canvas resolution on mobile devices to gain some
+        // performance, uncomment the following line:
+        // config.devicePixelRatio = 1;
 
-        document.body.style.textAlign = "left";
+
+      } else {
+        // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
+        canvas.style.width = "960px";
+        canvas.style.height = "600px";
       }
 
-      var unityInstance = null;
+      document.querySelector("#unity-loading-bar").style.display = "block";
 
-      createUnityInstance(document.querySelector("#unity-canvas"), {
-        arguments: [],
-        dataUrl: "Build/WebGLReward.data",
-        frameworkUrl: "Build/WebGLReward.framework.js",
-        codeUrl: "Build/WebGLReward.wasm",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "DefaultCompany",
-        productName: "H5Game",
-        productVersion: "1.0",
-      }).then((unityInstanceResutl) => {
-        unityInstance = unityInstanceResutl;
-      }).catch((message) => {
-        alert(message);
-      });
-<!--
-      function showRewardedAd() {
-        console.log("unityInstance");
-        console.log(unityInstance);
-        // Show an ad
-        adBreak({
-          type: 'reward',
-          name: 'reward-test',
-          beforeAd: () => {
-              console.log("beforeAd");
-          },
-          beforeReward: (showAdFn) => {
-              console.log("beforeReward");
-              showAdFn();
-          },
-          afterReward: () => {
-              console.log("afterReward");
-          },
-          adViewed: () => {
-              console.log("adViewed");
-              unityInstance.SendMessage('AdManager', 'OnRewardedAdFromJS');
-          },
-          adDismissed: () => {
-              console.log("beforeAd");
-              unityInstance.SendMessage('AdManager', 'OnCloseAdFromJS');
-          },
-          adBreakDone: (placementInfo) => {
-              console.log('adBreakDone');
-              console.log(placementInfo.breakStatus);
-              <!--
-              if (placementInfo.breakStatus === 'viewed')
-                unityInstance.SendMessage('AdManager', 'OnRewardedAdFromJS');
-              else
-                unityInstance.SendMessage('AdManager', 'OnCloseAdFromJS');
-              -->
-          }
-        });
+      var script = document.createElement("script");
+      script.src = loaderUrl;
+      script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+          document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
+              }).then((unityInstance) => {
+                window.unityInstance = unityInstance;
+                document.querySelector("#unity-loading-bar").style.display = "none";
+                document.querySelector("#unity-fullscreen-button").onclick = () => {
+                  unityInstance.SetFullscreen(1);
+                };
+
+              }).catch((message) => {
+                alert(message);
+              });
+            };
+
+      document.body.appendChild(script);
+
+    </script>
+
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+      import { getAnalytics, logEvent as firebaseLogEvent, setAnalyticsCollectionEnabled } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-analytics.js";
+      // TODO: Add SDKs for Firebase products that you want to use
+      // https://firebase.google.com/docs/web/setup#available-libraries
+
+      // Your web app's Firebase configuration
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      const firebaseConfig = {
+        apiKey: "AIzaSyAF9vv_KY0qKD8gTKepA0QME-BNqRVTDCY",
+        authDomain: "jumpu-406f2.firebaseapp.com",
+        projectId: "jumpu-406f2",
+        storageBucket: "jumpu-406f2.firebasestorage.app",
+        messagingSenderId: "874496862874",
+        appId: "1:874496862874:web:ea6f9fd8e3b809a0cb4d23",
+        measurementId: "G-CEHJRJ6JRQ"
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      console.log("Firebase App initialized:", app);
+
+      const analytics = getAnalytics(app);
+      console.log("Firebase Analytics instance:", analytics);
+
+      try {
+          firebaseLogEvent(analytics, 'initialized_test_event', { param1: 'value1' });
+          console.log("Firebase Test event logged (check Firebase Console).");
+      } catch (error) {
+          console.error("Firebase error logging event:", error);
       }
--->
 
+      // Analytics 데이터 수집 활성화 (디버깅시 데이터 수집이 오염될 수 있으므로 일시적으로 비활성화 해야됨)
+      setAnalyticsCollectionEnabled(analytics, true); // 실제 데이터 수집시 주석해제
+      //setAnalyticsCollectionEnabled(analytics, false) // 디버깅시 주석 해제
+
+      // logEvent 함수를 전역 스코프에 노출
+      window.unityFirebaseLogEvent = (eventName, params) => {
+          firebaseLogEvent(analytics, eventName, params);
+      };
     </script>
   </body>
 </html>

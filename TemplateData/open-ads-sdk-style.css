@@ -1,0 +1,9 @@
+#open-ads-banner.banner-ad { 
+    position: absolute;
+    bottom: 0.9%;
+    left: 0;
+    width: 100%;
+    height: -90px;
+    z-index: 10;
+    /* background-color: #333; */
+    }
