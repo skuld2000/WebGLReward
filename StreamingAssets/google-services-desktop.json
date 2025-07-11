@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1068023334342",
+    "project_id": "gas-attack-9398f",
+    "storage_bucket": "gas-attack-9398f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1068023334342:android:9f015e22b7981143e65ec7",
+        "android_client_info": {
+          "package_name": "com.catpop.android"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlc7v2lOSw9rhEExYXhydPrIV6FVqv0Xw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

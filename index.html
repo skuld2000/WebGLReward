@@ -3,19 +3,13 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity Web Player | TestInit</title>
+    <title>Unity Web Player | CatPop</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
-    <script src="scripts/dapp-portal-sdk.js"></script>
-    <script src="scripts/dapp-portal-sdk-unity.js"></script>
-    <link rel="stylesheet" href="TemplateData/open-ads-sdk-style.css">
-    <script type="text/javascript" src="https://static.line-scdn.net/liff/edge/versions/2.22.3/sdk.js"></script>
-    <script type="text/javascript" src="https://protocol.openad.network/line/sdk.loader.js?v=2.0"></script>
-    <script src="scripts/open-ads-sdk-unity.js"></script>
   </head>
   <body>
     <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas" width=960 height=600 tabindex="-1"></canvas>
+      <canvas id="unity-canvas" width=376 height=668 tabindex="-1"></canvas>
       <div id="unity-loading-bar">
         <div id="unity-logo"></div>
         <div id="unity-progress-bar-empty">
@@ -26,11 +20,8 @@
       <div id="unity-footer">
         <div id="unity-logo-title-footer"></div>
         <div id="unity-fullscreen-button"></div>
-        <div id="unity-build-title">TestInit</div>
+        <div id="unity-build-title">CatPop</div>
       </div>
-      <div id= "open-ads-banner" class="openADJsSDKBanner banner-ad" 
-        publisherId=""
-        zoneId=""></div>
     </div>
     <script>
       var canvas = document.querySelector("#unity-canvas");
@@ -61,16 +52,16 @@
       }
 
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/TempleteProject_Gzip.loader.js";
+      var loaderUrl = buildUrl + "/_WebGL_ALPHA__202507111714.loader.js";
       var config = {
         arguments: [],
-        dataUrl: buildUrl + "/TempleteProject_Gzip.data.gz",
-        frameworkUrl: buildUrl + "/TempleteProject_Gzip.framework.js.gz",
-        codeUrl: buildUrl + "/TempleteProject_Gzip.wasm.gz",
+        dataUrl: buildUrl + "/_WebGL_ALPHA__202507111714.data.br",
+        frameworkUrl: buildUrl + "/_WebGL_ALPHA__202507111714.framework.js.br",
+        codeUrl: buildUrl + "/_WebGL_ALPHA__202507111714.wasm.br",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
-        productName: "TestInit",
-        productVersion: "1.0",
+        productName: "CatPop",
+        productVersion: "0.1.0.0.0",
         showBanner: unityShowBanner,
       };
 
@@ -107,8 +98,8 @@
 
       } else {
         // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
-        canvas.style.width = "960px";
-        canvas.style.height = "600px";
+        canvas.style.width = "376px";
+        canvas.style.height = "668px";
       }
 
       document.querySelector("#unity-loading-bar").style.display = "block";
@@ -119,7 +110,6 @@
         createUnityInstance(canvas, config, (progress) => {
           document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
               }).then((unityInstance) => {
-                window.unityInstance = unityInstance;
                 document.querySelector("#unity-loading-bar").style.display = "none";
                 document.querySelector("#unity-fullscreen-button").onclick = () => {
                   unityInstance.SetFullscreen(1);
@@ -144,13 +134,13 @@
       // Your web app's Firebase configuration
       // For Firebase JS SDK v7.20.0 and later, measurementId is optional
       const firebaseConfig = {
-        apiKey: "AIzaSyAF9vv_KY0qKD8gTKepA0QME-BNqRVTDCY",
-        authDomain: "jumpu-406f2.firebaseapp.com",
-        projectId: "jumpu-406f2",
-        storageBucket: "jumpu-406f2.firebasestorage.app",
-        messagingSenderId: "874496862874",
-        appId: "1:874496862874:web:ea6f9fd8e3b809a0cb4d23",
-        measurementId: "G-CEHJRJ6JRQ"
+        apiKey: "AIzaSyA1fWJazF9CVXT-9cAIcFoFHGBXvHesbRI",
+        authDomain: "fruits-pop-26182.firebaseapp.com",
+        projectId: "fruits-pop-26182",
+        storageBucket: "fruits-pop-26182.firebasestorage.app",
+        messagingSenderId: "106674103663",
+        appId: "1:106674103663:web:34af92f2859cba18cb349a",
+        measurementId: "G-P6HM6SY6QK"
       };
 
       // Initialize Firebase
